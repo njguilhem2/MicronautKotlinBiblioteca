@@ -1,17 +1,21 @@
 package br.com.livros.model
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 data class Livros(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long = 0,
-    val descricao: String = "",
-    val autor: String = "",
-    val nome: String = "",
-    val valor: Double = 0.0,
-)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long?,
+    @Column
+    val descricao: String,
+    @Column
+    val autor: String,
+    @Column
+    val nome: String,
+    @Column
+    val valor: Double,
+){
+    constructor(): this(null,"","","",0.0)
+
+}
