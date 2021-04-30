@@ -5,7 +5,6 @@ import br.com.livros.repository.LivrosRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class LivrosServiceImpl @Inject constructor(private var livrosRepository: LivrosRepository)
     :LivrosService{

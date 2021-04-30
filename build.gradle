@@ -36,6 +36,12 @@ dependencies {
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.h2database:h2")
+
+    //Test
+    kaptTest "io.micronaut:micronaut-inject-java"
+    testImplementation "io.micronaut.test:micronaut-test-kotlintest:2.3.2"
+    testImplementation "io.mockk:mockk:1.10.4"
+    testImplementation "io.kotlintest:kotlintest-runner-junit5:3.3.2"
 }
 
 mainClassName = "br.com.livros.ApplicationKt"
@@ -53,6 +59,8 @@ compileTestKotlin {
         jvmTarget = '11'
     }
 }
-
+test {
+    useJUnitPlatform()
+}
 
 

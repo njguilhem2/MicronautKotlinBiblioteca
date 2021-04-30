@@ -1,35 +1,41 @@
 package br.com.livros.controller
 
 import br.com.livros.model.Livros
+import br.com.livros.service.LivrosService
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.MediaType
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @MicronautTest
 class LivrosControllerTest {
+    @InjectMockKs
+    lateinit var livrosController: LivrosController
 
-    @Inject
-    @field:Client("/")
-    lateinit var client: RxHttpClient
+    @MockK
+    lateinit var livrosService: LivrosService
+    lateinit var livros: Livros
 
-    @Test
-    fun testController() {
-        var request= HttpRequest.GET<Any>("/livros/")
-        var result = client.toBlocking().retrieve(request,List::class.java)
-        Assertions.assertNotNull(result)
+    @BeforeEach
+    fun setUp() {
+        MockKAnnotations.init(this)
+        livros = Livros(1L,"descricao","autor","nome",1.0)
     }
     @Test
-    fun testControllerPost(){
-        var request = HttpRequest.POST<Any>("/livros",
-                """{"nome":"allan walker","autor":"niltu","valor":5.2,"descricao":"dasdasdas"}""")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        var result = client.toBlocking().retrieve(request, Livros::class.java)
-        Assertions.assertNotNull(result)
+    fun `request books with success`() {
+        every { livrosService.create(any()) } returns livros
+        val result = livrosController.salvaLivros(livros)
+        Assertions.assertEquals(livros,result.body())
     }
+
 }
